@@ -11,7 +11,7 @@ const findById = async (id) => {
   const query = 'SELECT`id`,`name`,`quantity` FROM StoreManager.products WHERE id = ? ORDER BY id;';
 
   const [product] = await connection.execute(query, [id]);
-
+  if (!product) return [];
   return product;
 };
 
