@@ -20,6 +20,7 @@ app.get('/', (_request, response) => {
 app.get('/products', rescue(productsController.getAll));
 app.post('/products', rescue(validateProducts), rescue(productsController.create));
 app.get('/products/:id', rescue(productsController.findById));
+app.put('/products/:id', rescue(validateProducts), rescue(productsController.update));
 
 app.get('/sales', rescue(salesController.getAll));
 app.post('/sales', rescue(validateSales), rescue(salesController.create));

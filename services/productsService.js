@@ -26,8 +26,18 @@ const create = async ({ name, quantity }) => {
   return { id, name, quantity };
 };
 
+const update = async ({ name, quantity, id }) => {
+  const productId = await findById(id);
+
+  if (productId.err) return productId;
+
+  await ProductModel.update({ name, quantity, id });
+  return { id, name, quantity };
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  update,
 };
