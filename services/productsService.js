@@ -22,7 +22,6 @@ const create = async ({ name, quantity }) => {
   if (haveProduct) return { err: 'Product already exists', code: 409 };
 
   const id = await ProductModel.create({ name, quantity });
-  console.log(id);
 
   return { id, name, quantity };
 };
