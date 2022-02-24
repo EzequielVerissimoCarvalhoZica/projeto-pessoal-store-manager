@@ -1,8 +1,16 @@
 const joiValidateSales = require('../schemas/joiValidateSales');
 
 module.exports = (req, res, next) => {
-  const { quantity, productId } = req.body;
+  let productId;
+  let quantity;
 
+  if (req.body.length) {
+    productId = req.body[0].productId;
+    quantity = req.body[0].quantity;
+  } else {
+    productId = req.body.productId;
+    quantity = req.body.quantity;
+  }
   const { error } = joiValidateSales.validate({ productId, quantity });
 
   if (error) {
