@@ -79,6 +79,7 @@ describe('CONTROLLER PRODUCTS TESTS', () => {
       });
 
       it('Chama res.status com status 200', async () => {
+        request.params = {id: 1};
         await ProductsController.findById(request, response, next);
 
         expect(response.status.calledWith(200)).to.be.true;
@@ -109,7 +110,6 @@ describe('CONTROLLER PRODUCTS TESTS', () => {
       });
 
       it('Chama res.json com o obj "{ message: "Product not found", code: 404 }" ', async () => {
-        request.params = {id: 7};
         await ProductsController.findById(request, response, next);
 
         expect(response.json.calledWith(findByIdProductResponseController)).to.be.true;

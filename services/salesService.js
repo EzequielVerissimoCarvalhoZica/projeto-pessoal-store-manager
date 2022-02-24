@@ -2,6 +2,7 @@ const SalesModel = require('../models/SalesModel');
 
 const getAll = async () => {
   const sales = await SalesModel.getAll();
+
   const salesList = sales.map((sale) => (
     {
       saleId: sale.id,
@@ -15,6 +16,7 @@ const getAll = async () => {
 
 const findById = async (id) => {
   const date = await SalesModel.findById(id);
+
   if (date.length === 0) return { err: 'Sale not found', code: 404 };
   const salesList = date.map((s) => (
     {
