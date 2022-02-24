@@ -2,6 +2,7 @@ const ProductModel = require('../models/ProductsModel');
 
 const getAll = async () => {
   const products = await ProductModel.getAll();
+  if (products.length === 0) return { err: 'Products not found', code: 404 };
   return products;
 };
 

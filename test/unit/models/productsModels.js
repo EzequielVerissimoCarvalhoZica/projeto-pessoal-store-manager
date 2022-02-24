@@ -42,10 +42,8 @@ describe('MODEL PRODUCTS TESTS', () => {
       });
     });
   });
-  describe('Lista produto pelo ID', () => {
 
-    
-    
+  describe('Lista produto pelo ID', () => {
     describe('Testa quando tem o produto', () => {
       const product = [ { id: 1, name: 'Martelo de Thor', quantity: 10 } ];
       const executeResponse = [ { id: 1, name: 'Martelo de Thor', quantity: 10 } ];
@@ -63,7 +61,7 @@ describe('MODEL PRODUCTS TESTS', () => {
 
       it('retorna produto com id 1', async () => {
         const modelResponse = await ProductsModels.findById(productId.id);
-        console.log(modelResponse, product);
+
         expect(modelResponse).to.be.deep.equal(product[0]);
       })
     });
