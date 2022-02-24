@@ -74,26 +74,5 @@ describe('MODEL SALES TESTS', () => {
         expect(modelResponse).to.be.deep.equal(executeResponse[0]);
       })
     });
-    // describe('Testa quando não tem produto', () => {
-    //   const product = [];
-    //   const executeResponse = [];
-    //   const productId = {
-    //     id: 7,
-    //   };
-
-    //   before(() => {
-    //     sinon.stub(DB, 'execute').resolves(executeResponse);
-    //   })
-  
-    //   after(() => {
-    //     DB.execute.restore();
-    //   });
-  
-    //   it('nao retorna nada passando um id que nao existe', async () => {
-    //     const modelResponse = await ProductsModels.findById(productId.id);
-
-    //     expect(modelResponse).to.deep.equal(product);
-    //   })
-    // });
   });
 });

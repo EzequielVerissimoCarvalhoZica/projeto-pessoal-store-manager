@@ -2,7 +2,6 @@ const SalesModel = require('../models/SalesModel');
 
 const getAll = async () => {
   const sales = await SalesModel.getAll();
-
   const salesList = sales.map((sale) => (
     {
       saleId: sale.id,
