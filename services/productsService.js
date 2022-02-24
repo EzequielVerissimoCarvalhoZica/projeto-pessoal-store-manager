@@ -14,7 +14,21 @@ const findById = async (id) => {
   return product;
 };
 
+const create = async ({ name, quantity }) => {
+  const products = await ProductModel.getAll();
+
+  const haveProduct = products.some((p) => p.name === name);
+
+  if (haveProduct) return { err: 'Product already exists', code: 409 };
+
+  const id = await ProductModel.create({ name, quantity });
+  console.log(id);
+
+  return { id, name, quantity };
+};
+
 module.exports = {
   getAll,
   findById,
+  create,
 };
