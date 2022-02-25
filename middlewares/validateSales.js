@@ -1,23 +1,37 @@
 const joiValidateSales = require('../schemas/joiValidateSales');
 
-module.exports = (req, res, next) => {
-  let productId;
-  let quantity;
+const bodyTransform = (body) => {
+  if (Array.isArray(body)) {
+    const salesList = body.map((e) => (
+      {
+        productId: e.productId,
+        quantity: e.quantity,
+      }
+    ));
+    return salesList;
+  } 
+    return false;
+};
 
-  if (req.body.length) {
-    productId = req.body[0].productId;
-    quantity = req.body[0].quantity;
-  } else {
-    productId = req.body.productId;
-    quantity = req.body.quantity;
+const validadeSalesMiddle = (req, res, next) => {
+  const salesList = bodyTransform(req.body);
+  let erro;
+
+  // console.log(salesList);
+  salesList.forEach(({ productId, quantity }) => {
+    const { error } = joiValidateSales.validate({ productId, quantity });
+    if (error) {
+      erro = error;
+    }
+  });
+  // console.log(erro);
+  if (erro) {
+    const [code, message] = erro.message.split('|');
+    return res.status(code).json({ message });
   }
-  const { error } = joiValidateSales.validate({ productId, quantity });
-
-  if (error) {
-    const [code, message] = error.message.split('|');
-
-    return res.status(code).json(message);
-  }
-
   return next();
+};
+
+module.exports = {
+  validadeSalesMiddle,
 };

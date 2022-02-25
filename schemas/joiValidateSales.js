@@ -1,8 +1,10 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  productId: Joi.string().required().messages({
-    'any.required': '400|"productId" is required',
+  productId: Joi.number().positive().required().strict()
+  .messages({
+    'any.required': '400 |"productId" is required',
+    'number.positive': '422|"quantity" must be greater than or equal to 1',
   }),
   quantity: Joi
   .number()

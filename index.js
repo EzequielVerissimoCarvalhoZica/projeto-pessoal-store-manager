@@ -7,6 +7,7 @@ const salesController = require('./controllers/salesController');
 const errorMiddle = require('./middlewares/error');
 const validateProducts = require('./middlewares/validateProducts');
 const validateSales = require('./middlewares/validateSales');
+const validate = require('./middlewares/validade');
 
 const app = express();
 
@@ -24,8 +25,9 @@ app.put('/products/:id', rescue(validateProducts), rescue(productsController.upd
 app.delete('/products/:id', rescue(productsController.deleteProduct));
 
 app.get('/sales', rescue(salesController.getAll));
-app.post('/sales', rescue(validateSales), rescue(salesController.create));
+app.post('/sales', rescue(validateSales.validadeSalesMiddle), rescue(salesController.create));
 app.get('/sales/:id', rescue(salesController.findById));
+app.put('/sales/:id', rescue(validateSales.validadeSalesMiddle));
 
 app.use(errorMiddle);
 
