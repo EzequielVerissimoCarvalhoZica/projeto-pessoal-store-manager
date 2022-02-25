@@ -32,13 +32,14 @@ const create = async (body) => {
   const itemsSold = [];
   const id = await SalesModel.createSale();
 
-  body.forEach(({ productId, quantity }) => {
+  const createdListPending = body.map(({ productId, quantity }) => {
     itemsSold.push({
       productId,
       quantity,
     });
-    SalesModel.createSaleProduct(id, productId, quantity);
+    return SalesModel.createSaleProduct(id, productId, quantity);
   });
+  await Promise.all(createdListPending);
 
   return {
     id,
@@ -46,12 +47,29 @@ const create = async (body) => {
   };
 };
 
+const update = async ({ productId, quantity, id }) => {
+  const saleId = await findById(id);
+
+  if (saleId.err) return saleId;
+
+  await SalesModel.update({ productId, quantity, id });
+  return {
+    saleId: id,
+    itemUpdated: [
+      {
+        productId,
+        quantity,
+      },
+    ],
+  };
+};
+
 const bodyTransform = (body) => {
   if (Array.isArray(body)) {
-    const salesList = body.map((e) => (
+    const salesList = body.map(({ productId, quantity }) => (
       {
-        productId: e.productId,
-        quantity: e.quantity,
+        productId,
+        quantity,
       }
     ));
     return salesList;
@@ -64,4 +82,5 @@ module.exports = {
   findById,
   bodyTransform,
   create,
+  update,
 };

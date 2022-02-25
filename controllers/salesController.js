@@ -16,14 +16,26 @@ const findById = async (req, res) => {
 
 const create = async (req, res) => {
   const bodyRequestList = salesService.bodyTransform(req.body);
+
   const salesList = await salesService.create(bodyRequestList);
 
-  console.log(salesList);
   return res.status(201).json(salesList);
+};
+
+const update = async (req, res) => {
+  const { id } = req.params;
+  const [body] = req.body;
+  const { quantity, productId } = body;
+
+  const sale = await salesService.update({ productId, quantity, id });
+
+  if (sale.err) return res.status(sale.code).json({ message: sale.err });
+  return res.status(200).json(sale);
 };
 
 module.exports = {
   getAll,
   findById,
   create,
+  update,
 };

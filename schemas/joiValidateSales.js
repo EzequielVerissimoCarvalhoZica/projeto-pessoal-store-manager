@@ -17,16 +17,3 @@ module.exports = Joi.object({
     'number.positive': '422|"quantity" must be greater than or equal to 1',
   }),
 });
-
-// const bodyTransform = (body) => {
-//   if (Array.isArray(body)) {
-//     const salesList = body.map((e) => (
-//       {
-//         productId: e.productId,
-//         quantity: e.quantity,
-//       }
-//     ));
-//     return salesList;
-//   } 
-//     return false;
-// };

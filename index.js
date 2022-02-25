@@ -26,7 +26,7 @@ app.delete('/products/:id', rescue(productsController.deleteProduct));
 app.get('/sales', rescue(salesController.getAll));
 app.post('/sales', rescue(validateSales.validadeSalesMiddle), rescue(salesController.create));
 app.get('/sales/:id', rescue(salesController.findById));
-app.put('/sales/:id', rescue(validateSales.validadeSalesMiddle));
+app.put('/sales/:id', rescue(validateSales.validadeSalesMiddle), rescue(salesController.update));
 
 app.use(errorMiddle);
 
