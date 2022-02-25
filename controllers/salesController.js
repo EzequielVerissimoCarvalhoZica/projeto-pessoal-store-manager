@@ -15,17 +15,8 @@ const findById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  // let productId;
-  // let quantity;
-  // // console.log(req.body);
-  // if (req.body.length) {
-  //   productId = req.body[0].productId;
-  //   quantity = req.body[0].quantity;
-  // } else {
-  //   productId = req.body.productId;
-  //   quantity = req.body.quantity;
-  // }
-  return res.status(201).end();
+  const { quantity } = req.body;
+  return res.status(201).json(quantity);
 };
 
 module.exports = {
