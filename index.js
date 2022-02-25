@@ -7,7 +7,6 @@ const salesController = require('./controllers/salesController');
 const errorMiddle = require('./middlewares/error');
 const validateProducts = require('./middlewares/validateProducts');
 const validateSales = require('./middlewares/validateSales');
-const validate = require('./middlewares/validade');
 
 const app = express();
 
