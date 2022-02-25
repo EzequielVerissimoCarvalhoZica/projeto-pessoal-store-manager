@@ -15,8 +15,11 @@ const findById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { quantity } = req.body;
-  return res.status(201).json(quantity);
+  const bodyRequestList = salesService.bodyTransform(req.body);
+  const salesList = await salesService.create(bodyRequestList);
+
+  console.log(salesList);
+  return res.status(201).json(salesList);
 };
 
 module.exports = {
