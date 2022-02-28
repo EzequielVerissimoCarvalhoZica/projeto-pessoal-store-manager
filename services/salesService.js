@@ -64,23 +64,19 @@ const update = async ({ productId, quantity, id }) => {
   };
 };
 
-const bodyTransform = (body) => {
-  if (Array.isArray(body)) {
-    const salesList = body.map(({ productId, quantity }) => (
-      {
-        productId,
-        quantity,
-      }
-    ));
-    return salesList;
-  } 
-    return { err: 'Wrong fields', code: 400 };
+const deleteSale = async ({ id }) => {
+  const saleId = await findById(id);
+
+  if (saleId.err) return saleId;
+
+  const response = await SalesModel.deleteSale({ id });
+  return response;
 };
 
 module.exports = {
   getAll,
   findById,
-  bodyTransform,
   create,
   update,
+  deleteSale,
 };

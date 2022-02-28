@@ -1,4 +1,5 @@
 const salesService = require('../services/salesService');
+const bodyTransform = require('../schemas/bodyTransform');
 
 const getAll = async (_req, res) => {
     const sales = await salesService.getAll();
@@ -15,7 +16,7 @@ const findById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const bodyRequestList = salesService.bodyTransform(req.body);
+  const bodyRequestList = bodyTransform(req.body);
 
   const salesList = await salesService.create(bodyRequestList);
 
@@ -33,9 +34,20 @@ const update = async (req, res) => {
   return res.status(200).json(sale);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+
+  const sale = await salesService.deleteSale({ id });
+
+  if (sale.err) return res.status(sale.code).json({ message: sale.err });
+
+  return res.status(204).end();
+};
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  deleteSale,
 };
