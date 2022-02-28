@@ -2,10 +2,10 @@ const joiValidateSales = require('../schemas/joiValidateSales');
 
 const bodyTransform = (body) => {
   if (Array.isArray(body)) {
-    const salesList = body.map((e) => (
+    const salesList = body.map(({ productId, quantity }) => (
       {
-        productId: e.productId,
-        quantity: e.quantity,
+        productId,
+        quantity,
       }
     ));
     return salesList;
