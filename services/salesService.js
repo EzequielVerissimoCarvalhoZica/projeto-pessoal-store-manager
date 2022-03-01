@@ -1,13 +1,5 @@
 const SalesModel = require('../models/SalesModel');
 
-// const updateProductQuantity = async (saleId) => {
-//   const sales = await SalesModel.updateProductQuantity(saleId);
-
-//   sales.forEach(({ product_id, quantity }) => {
-//     console.log(product_id, quantity);
-//   });
-// };
-
 const getAll = async () => {
   const sales = await SalesModel.getAll();
   const salesList = sales.map((sale) => (
