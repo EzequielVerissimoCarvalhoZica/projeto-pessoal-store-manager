@@ -36,7 +36,7 @@ const createSale = async () => {
   return sale.insertId;
 };
 
-const teste = async (id) => {
+const getProductQuantity = async (id) => {
   const query = 'SELECT quantity FROM StoreManager.products WHERE id = ?;';
 
   const [quantity] = await connection.execute(query, [id]);
@@ -46,7 +46,7 @@ const teste = async (id) => {
 const createSaleProduct = async (saleId, productId, quantity) => {
   const query = `INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES
   (?, ?, ?);`;
-  const quantityProduct = await teste(productId);
+  const quantityProduct = await getProductQuantity(productId);
 
   if (quantityProduct.quantity < quantity) {
     return { err: 'Such amount is not permitted to sell' };
