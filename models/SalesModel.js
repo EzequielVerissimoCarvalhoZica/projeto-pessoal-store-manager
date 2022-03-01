@@ -24,13 +24,26 @@ const findById = async (id) => {
 const createSale = async () => {
   const query = 'INSERT INTO StoreManager.sales (date) VALUES (NOW());';
   const [sale] = await connection.execute(query);
+
   return sale.insertId;
+};
+
+const removeQuantity = async (productId, quantity) => {
+  const query = `UPDATE StoreManager.products
+  SET quantity = quantity - ?
+  WHERE id = ?;`;
+
+  await connection.execute(query, [quantity, productId]);
 };
 
 const createSaleProduct = async (saleId, productId, quantity) => {
   const query = `INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES
-  (1, 1, 5);`;
-  await connection.execute(query, [saleId, productId, quantity]);
+  (?, ?, ?);`;
+
+  const create = connection.execute(query, [saleId, productId, quantity]);
+  const quantityUpdated = removeQuantity(productId, quantity);
+
+  await Promise.all([create, quantityUpdated]);
 };
 
 const update = async ({ productId, quantity, id }) => {
@@ -41,9 +54,19 @@ const update = async ({ productId, quantity, id }) => {
   await connection.execute(query, [productId, quantity, id]);
 };
 
-const deleteSale = async ({ id }) => {
-  const query = 'DELETE FROM `StoreManager`.`sales_products` WHERE sale_id = ?;';
+const restoreQuantity = async (saleId) => {
+  const query = `UPDATE StoreManager.products AS p
+  INNER JOIN StoreManager.sales_products AS sp
+  ON sp.product_id = p.id
+  SET p.quantity = p.quantity + sp.quantity
+  WHERE id = ?;`;
+  const [productId] = await findById(saleId);
 
+  await connection.execute(query, [productId.product_id]);
+};
+const deleteSale = async ({ id }) => {
+  await restoreQuantity(id);
+  const query = 'DELETE FROM `StoreManager`.`sales_products` WHERE sale_id = ?;';
   const response = await connection.execute(query, [id]);
 
   return response;
