@@ -21,13 +21,6 @@ const findById = async (id) => {
   return sale;
 };
 
-const createSale = async () => {
-  const query = 'INSERT INTO StoreManager.sales (date) VALUES (NOW());';
-  const [sale] = await connection.execute(query);
-
-  return sale.insertId;
-};
-
 const removeQuantity = async (productId, quantity) => {
   const query = `UPDATE StoreManager.products
   SET quantity = quantity - ?
@@ -36,14 +29,33 @@ const removeQuantity = async (productId, quantity) => {
   await connection.execute(query, [quantity, productId]);
 };
 
+const createSale = async () => {
+  const query = 'INSERT INTO StoreManager.sales (date) VALUES (NOW());';
+  const [sale] = await connection.execute(query);
+
+  return sale.insertId;
+};
+
+const teste = async (id) => {
+  const query = 'SELECT quantity FROM StoreManager.products WHERE id = ?;';
+
+  const [quantity] = await connection.execute(query, [id]);
+  return quantity[0];
+};
+
 const createSaleProduct = async (saleId, productId, quantity) => {
   const query = `INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES
   (?, ?, ?);`;
+  const quantityProduct = await teste(productId);
 
+  if (quantityProduct.quantity < quantity) {
+    return { err: 'Such amount is not permitted to sell' };
+  }
   const create = connection.execute(query, [saleId, productId, quantity]);
   const quantityUpdated = removeQuantity(productId, quantity);
 
-  await Promise.all([create, quantityUpdated]);
+  const result = await Promise.all([create, quantityUpdated]);
+  return result;
 };
 
 const update = async ({ productId, quantity, id }) => {

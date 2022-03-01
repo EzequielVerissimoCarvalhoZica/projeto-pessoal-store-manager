@@ -28,24 +28,27 @@ const findById = async (id) => {
   return bodyRequestList;
 };
 
+const objResponseError = {
+  message: { message: 'Such amount is not permitted to sell' }, code: 422,
+};
 const create = async (body) => {
   const itemsSold = [];
   const id = await SalesModel.createSale();
-
   const createdListPending = body.map(({ productId, quantity }) => {
     itemsSold.push({
       productId,
       quantity,
     });
-
     return SalesModel.createSaleProduct(id, productId, quantity);
   });
-  await Promise.all(createdListPending);
+  const [result] = await Promise.all(createdListPending);
+  if (result.err) return objResponseError;
 
-  return {
+  return { message: {
     id,
     itemsSold,
-  };
+  },
+  code: 201 };
 };
 
 const update = async ({ productId, quantity, id }) => {
