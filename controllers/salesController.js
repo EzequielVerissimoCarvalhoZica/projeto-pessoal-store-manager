@@ -19,7 +19,6 @@ const create = async (req, res) => {
   const bodyRequestList = bodyTransform(req.body);
 
   const salesList = await salesService.create(bodyRequestList);
-  // if (salesList.err) return res.status(salesList.code).json({ message: salesList.err });
 
   return res.status(salesList.code).json(salesList.message);
 };
